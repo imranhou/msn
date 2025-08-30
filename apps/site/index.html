@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/favicon.ico" />
+    <title>MyShareNow - Track Commissions in Real Time</title>
+    <style>
+        :root {
+            --primary: #3563E9;
+            --secondary: #54A6FF;
+            --accent: #20a030;
+            --dark: #1A202C;
+            --light: #F8FAFC;
+            --gray: #64748B;
+            --light-gray: #E2E8F0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 800;
+            font-size: 24px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span.highlight {
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #2a50c2;
+            border-color: #2a50c2;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #3563E9 0%, #54A6FF 100%);
+            color: white;
+            padding: 140px 0 80px;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 20px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .btn-light {
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid white;
+        }
+        
+        .btn-light:hover {
+            background-color: transparent;
+            color: white;
+        }
+        
+        .hero-image {
+            max-width: 850px;
+            margin: 50px auto 0;
+            position: relative;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            padding: 100px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .section-header p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(53, 99, 233, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .feature-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary);
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+        }
+        
+        .how-it-works {
+            background-color: #f0f5ff;
+            padding: 100px 0;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            counter-reset: step-counter;
+        }
+        
+        .step-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            position: relative;
+            counter-increment: step-counter;
+        }
+        
+        .step-card::before {
+            content: counter(step-counter);
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        
+        .step-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        .step-card p {
+            color: var(--gray);
+        }
+        
+        .testimonials {
+            padding: 100px 0;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .testimonial-content {
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--light-gray);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            font-size: 14px;
+            color: var(--gray);
+        }
+        
+        .pricing {
+            background-color: #f0f5ff;
+            padding: 100px 0;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .pricing-card {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .pricing-header h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: 800;
+        }
+        
+        .price span {
+            font-size: 16px;
+            font-weight: normal;
+            opacity: 0.8;
+        }
+        
+        .pricing-features {
+            padding: 30px;
+            list-style: none;
+        }
+        
+        .pricing-features li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--gray);
+        }
+        
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .pricing-footer {
+            padding: 0 30px 30px;
+            text-align: center;
+        }
+        
+        .cta {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .cta p {
+            font-size: 18px;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .footer-bottom p {
+            color: rgba(255,255,255,0.7);
+            font-size: 14px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: rgba(255,255,255,0.7);
+            transition: color 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">
+                <img src="./logo512.png" alt="MyShareNow Logo" style="height: 40px; margin-right: 10px;">
+                My<span class="highlight">Share</span>Now</a>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </nav>
+                <div class="buttons">
+                    <a href="https://app.mysharenow.com/login" class="btn btn-outline">Log In</a>
+                    <a href="#" class="btn btn-primary">Get Started</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Track Commissions<br>In Real Time</h1>
+            <p>MyShareNow helps automotive sales professionals track their earned commissions as they happen, empowering them to focus on what matters most: selling cars.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-light">Get Started</a>
+                <a href="#" class="btn btn-outline" style="color: white; border-color: white;">See Demo</a>
+            </div>
+            <div class="hero-image">
+                <img src="/api/placeholder/900/500" alt="MyShareNow dashboard preview showing commission tracking interface">
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2>Powerful Features For Sales Professionals</h2>
+                <p>Everything you need to stay on top of your sales performance and commissions in one intuitive platform.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 16h8V8H8v8zm2-6h4v4h-4v-4zm-6 6h2V8H4v8zm14-8v8h2V8h-2zM10 4v2h4V4h-4zm-2 0H6v2h2V4zm8 0h-2v2h2V4zM8 22h8v-2H8v2zm-4 0h2v-2H4v2zm14 0h2v-2h-2v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Real-Time Commission Tracking</h3>
+                    <p>Employees see their earnings update as deals close, or auto adjust when deals unwind. No more waiting for monthly statements to know what they've earned.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+                        </svg>
+                    </div>
+                    <h3>Performance Analytics</h3>
+                    <p>Visualize your sales trends, identify your best sales periods, and optimize your strategy with data-driven insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm0 4c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm6 12H6v-1.4c0-2 4-3.1 6-3.1s6 1.1 6 3.1V19z"/>
+                        </svg>
+                    </div>
+                    <h3>Personalized Dashboard</h3>
+                    <p>Customize your view to focus on the metrics that matter most to you. Track specific deal types, finance products, or time periods.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Secure & Confidential</h3>
+                    <p>Your data is encrypted and protected. Employees can see their personal earnings without exposing their information to others.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1s-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7-.25c.41 0 .75.34.75.75s-.34.75-.75.75-.75-.34-.75-.75.34-.75.75-.75zM19 19H5V5h14v14z"/>
+                            <path d="M12 12.25c-1.24 0-2.25-1.01-2.25-2.25S10.76 7.75 12 7.75 14.25 8.76 14.25 10 13.24 12.25 12 12.25zm0-3.5c-.69 0-1.25.56-1.25 1.25s.56 1.25 1.25 1.25 1.25-.56 1.25-1.25-.56-1.25-1.25-1.25zm5 7.5v-1.5c0-1.38-2.67-2-4-2s-4 .62-4 2v1.5h8z"/>
+                        </svg>
+                    </div>
+                    <h3>Mobile Access</h3>
+                    <p>Employees can check their commissions on the go with our mobile-friendly interface. Perfect for busy sales professionals working the lot.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/>
+                        </svg>
+                    </div>
+                    <h3>Commission Alerts</h3>
+                    <p>Employees receive notifications when new commissions are posted or when they hit your sales targets. Helps them stay motivated with real-time feedback.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2>How MyShareNow Works</h2>
+                <p>Simple, seamless integration with your dealership's existing systems for effortless commission tracking.</p>
+            </div>
+            <div class="steps">
+                <div class="step-card">
+                    <h3>Connect Your DMS</h3>
+                    <p>MyShareNow integrates with all major Dealer Management Systems to securely access your sales data without disrupting your workflow.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Customize Your Pay Plans</h3>
+                    <p>Set up commission structure, pay plans, and bonus thresholds to ensure accurate tracking of your employees earnings.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Track In Real-Time</h3>
+                    <p>Provide access to Sales teams so they can see commissions update as deals are processed. See front-end, back-end, and bonus earnings clearly broken down.</p>
+                </div>
+                <div class="step-card">
+                    <h3>Analyze & Optimize</h3>
+                    <p>Use insights from your sales patterns to identify opportunities, simulate different pay plans, and focus your efforts on the most profitable activities.</p>
+                </div>
+                <div class="step-card">
+                    <h3>AI & Automation</h3>
+                    <p>Use our AI based pay plan generator that uses insights into your data to create new pay plans and automatically or with a button-click apply those improvements monthly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Sales Professionals Say</h2>
+                <p>Join thousands of automotive sales professionals who have transformed their sales approach with MyShareNow.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "Before MyShareNow, I was constantly asking finance when my deals would be funded. Now I can see my commission status in real-time and focus on selling more cars instead of chasing paperwork."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">JD</div>
+                        <div class="author-info">
+                            <h4>James Donovan</h4>
+                            <p>Sales Manager, Luxury Auto Group</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "The performance analytics have completely changed how I approach each month. I can see which products yield the highest commission and focus my energy there. My monthly income has increased by 22%!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SL</div>
+                        <div class="author-info">
+                            <h4>Sarah Lin</h4>
+                            <p>Sales Consultant, Hometown Motors</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        "As a dealership owner, MyShareNow has dramatically reduced commission disputes and increased transparency. My sales team is more motivated now that they can track their earnings in real-time."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">MR</div>
+                        <div class="author-info">
+                            <h4>Michael Rodriguez</h4>
+                            <p>Dealer Principal, Rodriguez Auto Group</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2>Simple, Transparent Pricing</h2>
+                <p>Choose the plan that works best for your dealership size and needs.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Single Dealer</h3>
+                        <div class="price">$599<span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Up to 25 sales professionals</li>
+                        <li>Real-time commission tracking</li>
+                        <li>Performance analytics</li>
+                        <li>Mobile access</li>
+                        <li>Email/Chat support</li>
+                        <li>DMS integration included</li>
+                        <li>Manager dashboard</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary">Get Started</a>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header" style="background-color: var(--accent);">
+                        <h3>Multi-Dealer</h3>
+                        <div class="price">$999<span>/month</span></div>
+                    </div>
+                    <ul class="pricing-features">
+			<li>Up to 50 sales professionals </li>
+			<li>Up to three locations, same DMS</li>
+                        <li>Real-time commission tracking</li>
+                        <li>Performance analytics</li>
+                        <li>Mobile access</li>
+                        <li>Email/Chat support</li>
+                        <li>Manager dashboard</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-primary" style="background-color: var(--accent); border-color: var(--accent);">Get Started</a>
+                    </div>
+                </div>
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Auto Group</h3>
+                        <div class="price">Custom<span> pricing</span></div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li>Unlimited sales professionals</li>
+                        <li>Real-time commission tracking</li>
+                        <li>Performance analytics</li>
+                        <li>Mobile access with custom branding</li>
+                        <li>Priority support</li>
+                        <li>Multiple DMS integrations</li>
+                        <li>Custom Integrations & API access</li>
+                        <li>Group & Manager dashboards</li>
+                        <li>Custom pay plan rules</li>
+                    </ul>
+                    <div class="pricing-footer">
+                        <a href="#" class="btn btn-outline">Contact Sales</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to See Your Share Now?</h2>
+            <p>Start tracking your commissions in real-time and focus on what you do best: selling cars.</p>
+            <a href="#" class="btn btn-primary">Get Started Today</a>
+        </div>
